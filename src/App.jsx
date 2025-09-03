@@ -45,9 +45,9 @@ function Tarefa(props) {
   const feito = props.feito;*/
 
   return(
-    <>
+    <div style={{color: feito ? "green":"red"}}>
       {feito ? <p>[X] {title}</p> : <p>[  ] {title}</p>}
-    </>
+    </div>
   )
 }
 
