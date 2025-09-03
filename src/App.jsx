@@ -40,13 +40,42 @@ function Quadrado(props){
 
 function Tarefa(props) {
 
-  const {title, feito} = props;
+  const {title, feito, responsavel} = props;
   /*const title =  props.title;
   const feito = props.feito;*/
 
   return(
-    <div style={{color: feito ? "green":"red"}}>
-      {feito ? <p>[X] {title}</p> : <p>[  ] {title}</p>}
+    <div style={{
+      margin: "8px 0",
+      padding: "6px",
+      border: "1px solid #ddd",
+      borderRadius: "6px",
+      backgroundColor: "white"
+    }}>
+      <p>{title}</p>
+      <small>Responsável: {responsavel}</small>
+    </div>
+  )
+}
+
+function Coluna({titulo, tarefas}){
+  return(
+    <div style={{
+      flex: 1,
+      padding: "10px",
+      border: "1px solid #ccc",
+      borderRadius: "8px",
+      backgroundColor: "#f9f9f9",
+      color: 'black'
+    }}>
+      <h2>{titulo}</h2>
+      {tarefas.map(tarefa => (
+        <Tarefa
+          key={tarefa.id}
+          title={tarefa.title}
+          responsavel={tarefa.responsavel}
+        />
+      ))}
     </div>
   )
 }
@@ -54,18 +83,20 @@ function Tarefa(props) {
 
 export default function App() {
   const tarefas = [
-    {id: 1, title: "Ir para igreja", feito: true},
-    {id: 2, title: "Estudar React", feito: false},
-    {id: 3, title: "Ler um capítulo de Provérbios", feito: false}
+    {id: 1, title: "Ir para igreja", status: "a fazer", feito: true, responsavel: "Marcos"},
+    {id: 2, title: "Estudar React", status: "andamento", feito: false, responsavel: "Débora"},
+    {id: 3, title: "Ler um capítulo de Provérbios", status:"concluido", feito: false, responsavel: "Guilherme"}
   ]
   return(
-    <>
-      <div>
-        <h1>Minhas Tarefas</h1>
-        {tarefas.map((tarefa) => (
-          <Tarefa key={tarefa.id} title={tarefa.title} feito={tarefa.feito} />
-        ))}
-      </div>
-    </>
+    <div style={{ display: "flex", gap: "20px" }}>
+    {/* Coluna A fazer */}
+    <Coluna titulo="A Fazer" tarefas={tarefas.filter(t => t.status === "a_fazer")} />
+
+    {/* Coluna Em andamento */}
+    <Coluna titulo="Em Andamento" tarefas={tarefas.filter(t => t.status === "em_andamento")} />
+
+    {/* Coluna Concluído */}
+    <Coluna titulo="Concluído" tarefas={tarefas.filter(t => t.status === "concluido")} />
+  </div>
   )
 }
